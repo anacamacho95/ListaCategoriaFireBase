@@ -8,7 +8,7 @@ interface InterfaceDaoTareas {
     //crear
     fun addTarea (ta: Tarea)
     //leer Todas las tareas
-    fun getTareas(id: Int): MutableList<Tarea>
+    fun getTareas(id: String): MutableList<Tarea>
     //obtener el objeto Tarea
     fun getTarea (nombre: String): Tarea
     //actualizar
@@ -20,7 +20,7 @@ interface InterfaceDaoTareas {
     //crear
     fun addItem (ite: Item)
     //leer Todos los items
-    fun getItems(id: Int): MutableList<Item>
+    fun getItems(id: String): MutableList<Item>
     //obtener el objeto Item
     fun getItem (nombre: String): Item
     //actualizar item
@@ -29,5 +29,5 @@ interface InterfaceDaoTareas {
     fun deleteItem (ite: Item)
 
     //NºItems
-    fun getNItems(id: Int): Int
+    fun getNItems(id: String): Int
 }
