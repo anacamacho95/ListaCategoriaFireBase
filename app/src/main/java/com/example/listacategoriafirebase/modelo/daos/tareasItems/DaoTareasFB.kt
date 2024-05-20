@@ -17,21 +17,30 @@ class DaoTareasFB: InterfaceDaoTareas, InterfaceDaoConexion{
     }
 
     override fun addTarea(ta: Tarea) {
-        conexion.collection("tarea")
+        conexion.collection("tareas")
             .add(ta)
             .addOnSuccessListener { documentReference ->
-                Log.d("firebase", "DocumentSnapshot written with ID: ${documentReference.id}")
+                val idDocumento = documentReference.id
+                conexion.collection("tareas").document(idDocumento)
+                    .update("idTarea", idDocumento)
+                    .addOnSuccessListener {
+                        ta.idTarea = documentReference.id
+                        Log.d("ConfirmeAdd", "Se ha creado el cine correctamente")
+                    }
+                    .addOnFailureListener { e ->
+                        // Manejar el error de actualización
+                    }
             }
             .addOnFailureListener { e ->
-                Log.d("firebase", "Error adding document", e)
+                // Manejar el error de creación
             }
     }
 
-    override fun getTareas(id: String): MutableList<Tarea> {
+    override fun getTareas(idCategoria: String): MutableList<Tarea> {
         var tareas:MutableList<Tarea> = mutableListOf()
 
-        conexion.collection("tarea")
-            .whereEqualTo("id", id)
+        conexion.collection("tareas")
+            .whereEqualTo("idCategoria", idCategoria)
             .get()
             .addOnSuccessListener { querySnapshot ->
 
@@ -51,7 +60,7 @@ class DaoTareasFB: InterfaceDaoTareas, InterfaceDaoConexion{
 
     override fun getTarea(nombre: String): Tarea {
         var tareaEncontrada: Tarea? = null
-        conexion.collection("tarea")
+        conexion.collection("tareas")
             .whereEqualTo("nombre", nombre)
             .get()
             .addOnSuccessListener { documents ->
@@ -73,7 +82,7 @@ class DaoTareasFB: InterfaceDaoTareas, InterfaceDaoConexion{
     }
 
     override fun updateNombreTarea(ta: Tarea) {
-        conexion.collection("tarea").document(ta.idTarea)
+        conexion.collection("tareas").document(ta.idTarea)
             .update("nombre", ta.nombre)
             .addOnSuccessListener {  documentReference ->
                 Log.d("firebase","Documento actualizado")
@@ -85,7 +94,7 @@ class DaoTareasFB: InterfaceDaoTareas, InterfaceDaoConexion{
     }
 
     override fun deleteTarea(ta: Tarea) {
-        conexion.collection("tarea").document(ta.idTarea)
+        conexion.collection("tareas").document(ta.idTarea)
             .delete()
             .addOnSuccessListener {
                 Log.d("Firebase", "Tarea eliminada correctamente.")
@@ -98,21 +107,30 @@ class DaoTareasFB: InterfaceDaoTareas, InterfaceDaoConexion{
     }
 
     override fun addItem(ite: Item) {
-        conexion.collection("item")
+        conexion.collection("items")
             .add(ite)
             .addOnSuccessListener { documentReference ->
-                Log.d("firebase", "DocumentSnapshot written with ID: ${documentReference.id}")
+                val idDocumento = documentReference.id
+                conexion.collection("items").document(idDocumento)
+                    .update("idItem", idDocumento)
+                    .addOnSuccessListener {
+                        ite.idItem = documentReference.id
+                        Log.d("ConfirmeAdd", "Se ha creado el cine correctamente")
+                    }
+                    .addOnFailureListener { e ->
+                        // Manejar el error de actualización
+                    }
             }
             .addOnFailureListener { e ->
-                Log.d("firebase", "Error adding document", e)
+                // Manejar el error de creación
             }
     }
 
-    override fun getItems(id: String): MutableList<Item> {
+    override fun getItems(idTarea: String): MutableList<Item> {
         var items: MutableList<Item> = mutableListOf()
 
-        conexion.collection("item")
-            .whereEqualTo("id", id)
+        conexion.collection("items")
+            .whereEqualTo("idTarea", idTarea)
             .get()
             .addOnSuccessListener { querySnapshot ->
 
@@ -130,10 +148,10 @@ class DaoTareasFB: InterfaceDaoTareas, InterfaceDaoConexion{
         return items
     }
 
-    override fun getItem(nombre: String): Item {
+    override fun getItem(accion: String): Item {
         var itenEncontrado: Item? = null
         conexion.collection("item")
-            .whereEqualTo("accion", nombre)
+            .whereEqualTo("accion", accion)
             .get()
             .addOnSuccessListener { documents ->
                 if (!documents.isEmpty) {
@@ -154,8 +172,8 @@ class DaoTareasFB: InterfaceDaoTareas, InterfaceDaoConexion{
     }
 
     override fun updateItem(ite: Item) {
-        conexion.collection("item").document(ite.idItem)
-            .update("nombre", ite.accion)
+        conexion.collection("items").document(ite.idItem)
+            .update("accion", ite.accion)
             .addOnSuccessListener {  documentReference ->
                 Log.d("firebase","Documento actualizado")
 
@@ -166,7 +184,7 @@ class DaoTareasFB: InterfaceDaoTareas, InterfaceDaoConexion{
     }
 
     override fun deleteItem(ite: Item) {
-        conexion.collection("item").document(ite.idItem)
+        conexion.collection("items").document(ite.idItem)
             .delete()
             .addOnSuccessListener {
                 Log.d("Firebase", "Tarea eliminada correctamente.")
@@ -178,21 +196,21 @@ class DaoTareasFB: InterfaceDaoTareas, InterfaceDaoConexion{
             }
     }
 
-    override fun getNItems(id: String): Int {
-        var itemCount = 0
-
-        conexion.collection("item")
-            .document(id.toString())  // Aquí asumimos que el ID de la tarea es un String
-            .collection("items")
-            .get()
-            .addOnSuccessListener { querySnapshot ->
-                itemCount = querySnapshot.size()
-                Log.d("firebase", "Número de items: $itemCount")
-            }
-            .addOnFailureListener { exception ->
-                Log.e("firebase", "Error al obtener el número de items: $exception")
-            }
-
-        return itemCount
-    }
+//    override fun getNItems(id: String): Int {
+//        var itemCount = 0
+//
+//        conexion.collection("items")
+//            .document(id.toString())  // Aquí asumimos que el ID de la tarea es un String
+//            .collection("items")
+//            .get()
+//            .addOnSuccessListener { querySnapshot ->
+//                itemCount = querySnapshot.size()
+//                Log.d("firebase", "Número de items: $itemCount")
+//            }
+//            .addOnFailureListener { exception ->
+//                Log.e("firebase", "Error al obtener el número de items: $exception")
+//            }
+//
+//        return itemCount
+//    }
 }
