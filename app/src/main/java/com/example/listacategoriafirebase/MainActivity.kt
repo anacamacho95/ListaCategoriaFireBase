@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity() {
         itemsCocina.forEach{
             Log.d("pruebas", it.accion)
         }
-        Log.d("pruebas", "NºTareas: "+ daoTarea.getNItems(daoTarea.getTarea("Cocina").idTarea))
+       // Log.d("pruebas", "NºTareas: "+ daoTarea.getNItems(daoTarea.getTarea("Cocina").idTarea))
 
         Log.d("pruebas", " *** Obtengo Item Hacer Canelones *** ")
         val obtCanelones: Item = daoTarea.getItem("Hacer canelones")
@@ -100,7 +100,7 @@ class MainActivity : AppCompatActivity() {
                 for (item in items) {
                     Log.d("pruebas", "- ${item.accion}")
                 }
-                Log.d("pruebas", "NºTareas: "+ daoTarea.getNItems(tarea.idTarea))
+                //Log.d("pruebas", "NºTareas: "+ daoTarea.getNItems(tarea.idTarea))
             }
         }
 
@@ -120,7 +120,7 @@ class MainActivity : AppCompatActivity() {
             for (item in items) {
                 Log.d("pruebas", "- ${item.accion}")
             }
-            Log.d("pruebas", "NºTareas: "+ daoTarea.getNItems(tarea.idTarea))
+            //Log.d("pruebas", "NºTareas: "+ daoTarea.getNItems(tarea.idTarea))
         }
 
         Log.d("pruebas", " *** Actualizo nombre de categoria Hogar por Casa *** ")
@@ -140,7 +140,7 @@ class MainActivity : AppCompatActivity() {
                 for (item in items) {
                     Log.d("pruebas", "- ${item.accion}")
                 }
-                Log.d("pruebas", "NºTareas: "+ daoTarea.getNItems(tarea.idTarea))
+                //Log.d("pruebas", "NºTareas: "+ daoTarea.getNItems(tarea.idTarea))
             }
         }
 
@@ -158,7 +158,7 @@ class MainActivity : AppCompatActivity() {
                 for (item in items) {
                     Log.d("pruebas", "- ${item.accion}")
                 }
-                Log.d("pruebas", "NºTareas: "+ daoTarea.getNItems(tarea.idTarea))
+               // Log.d("pruebas", "NºTareas: "+ daoTarea.getNItems(tarea.idTarea))
             }
         }
 
@@ -176,7 +176,7 @@ class MainActivity : AppCompatActivity() {
                 for (item in items) {
                     Log.d("pruebas", "- ${item.accion}")
                 }
-                Log.d("pruebas", "NºTareas: "+ daoTarea.getNItems(tarea.idTarea))
+                //Log.d("pruebas", "NºTareas: "+ daoTarea.getNItems(tarea.idTarea))
             }
         }
 
@@ -194,7 +194,7 @@ class MainActivity : AppCompatActivity() {
                 for (item in items) {
                     Log.d("pruebas", "- ${item.accion}")
                 }
-                Log.d("pruebas", "NºTareas: "+ daoTarea.getNItems(tarea.idTarea))
+                //Log.d("pruebas", "NºTareas: "+ daoTarea.getNItems(tarea.idTarea))
             }
         }
     }

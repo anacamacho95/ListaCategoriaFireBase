@@ -17,13 +17,31 @@ class DaoCategoriasFB: InterfaceDaoCategorias, InterfaceDaoConexion {
         conexion = (con as BDFireBase).conexion
     }
     override fun addCategoria(ca: Categoria) {
-        conexion.collection("categoria")
+//        conexion.collection("categoria")
+//            .add(ca)
+//            .addOnSuccessListener { documentReference ->
+//                Log.d("firebase", "DocumentSnapshot written with ID: ${documentReference.id}")
+//            }
+//            .addOnFailureListener { e ->
+//                Log.d("firebase", "Error adding document", e)
+//            }
+        conexion.collection("categorias")
             .add(ca)
             .addOnSuccessListener { documentReference ->
-                Log.d("firebase", "DocumentSnapshot written with ID: ${documentReference.id}")
+                val idDocumento = documentReference.id
+
+                conexion.collection("categorias").document(idDocumento)
+                    .update("idCategoria", idDocumento)
+                    .addOnSuccessListener {
+                        ca.idCategoria = documentReference.id
+                        Log.d("ConfirmeAdd", "Se ha creado el cine correctamente")
+                    }
+                    .addOnFailureListener { e ->
+                        // Manejar el error de actualización
+                    }
             }
             .addOnFailureListener { e ->
-                Log.d("firebase", "Error adding document", e)
+                // Manejar el error de creación
             }
     }
 
