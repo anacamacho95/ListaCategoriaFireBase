@@ -34,7 +34,7 @@ class DaoCategoriasFB: InterfaceDaoCategorias, InterfaceDaoConexion {
                     .update("idCategoria", idDocumento)
                     .addOnSuccessListener {
                         ca.idCategoria = documentReference.id
-                        Log.d("ConfirmeAdd", "Se ha creado el cine correctamente")
+                        Log.d("firebase", "Se ha creado el cine correctamente")
                     }
                     .addOnFailureListener { e ->
                         // Manejar el error de actualización
@@ -70,23 +70,19 @@ class DaoCategoriasFB: InterfaceDaoCategorias, InterfaceDaoConexion {
 
     override fun getCategoria(nombre: String): Categoria {
         var categoriaEncontrada: Categoria? = null
-        conexion.collection("categoria")
+        conexion.collection("categorias")
             .whereEqualTo("nombre", nombre)
             .get()
-            .addOnSuccessListener { documents ->
-                if (!documents.isEmpty) {
-                    val document = documents.documents[0]
-                    categoriaEncontrada = document.toObject(Categoria::class.java)
-                    categoriaEncontrada?.idCategoria = document.id
-                    Log.d("Firebase", "Categoría encontrada: ${categoriaEncontrada?.nombre}")
-                } else {
-                    Log.d("Firebase", "Categoría no encontrada")
-                    categoriaEncontrada = Categoria("No encontrada")
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    for (document in task.result) {
+                        val categoria = document.toObject(Categoria::class.java)
+                        Log.d("firebase", categoriaEncontrada?.idCategoria+"--"+categoria.nombre)
+                    }
                 }
-            }
-            .addOnFailureListener { exception ->
-                Log.e("Firebase", "Error al obtener categoría: $exception")
-                categoriaEncontrada = Categoria("Error")
+                else {
+                    Log.d("firebase", "Error al obtener documentos.", task.exception)
+                }
             }
         return categoriaEncontrada ?: Categoria("Pendiente")
     }
@@ -107,11 +103,11 @@ class DaoCategoriasFB: InterfaceDaoCategorias, InterfaceDaoConexion {
         conexion.collection("categoria").document(ca.idCategoria)
             .delete()
             .addOnSuccessListener {
-                Log.d("Firebase", "Categoria eliminada correctamente.")
+                Log.d("firebase", "Categoria eliminada correctamente.")
                 // Aquí puedes realizar acciones adicionales luego de la eliminación, si es necesario
             }
             .addOnFailureListener { exception ->
-                Log.e("Firebase", "Error al eliminar categoria: $exception")
+                Log.e("firebase", "Error al eliminar categoria: $exception")
                 // Maneja el error de eliminación
             }
     }
